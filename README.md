@@ -78,3 +78,9 @@ Add the `"eslint-plugin-better-tree-shaking/no-top-level-side-effects"` rule in 
 	"eslint-plugin-better-tree-shaking/no-top-level-side-effects": "error"
 }
 ```
+
+<br/>
+
+### License
+
+MIT
