@@ -81,6 +81,6 @@ Add the `"eslint-plugin-better-tree-shaking/no-top-level-side-effects"` rule in 
 
 <br/>
 
-### License
+### Licence
 
 MIT
