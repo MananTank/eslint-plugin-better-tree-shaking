@@ -61,21 +61,21 @@ npm i -D eslint-plugin-better-tree-shaking
 
 ### Step 1: Add the plugin in ESLint Config
 
-Add `"eslint-plugin-better-tree-shaking"` to the plugins section of your ESLint configuration file.
+Add `"better-tree-shaking"` to the plugins section of your ESLint configuration file.
 
 ```json
 {
-	"plugins": ["eslint-plugin-better-tree-shaking"]
+	"plugins": ["better-tree-shaking"]
 }
 ```
 
 ### Step 2: Add the Plugin's rule
 
-Add the `"eslint-plugin-better-tree-shaking/no-top-level-side-effects"` rule in your ESLint config file as shown below
+Add the `"better-tree-shaking/no-top-level-side-effects"` rule in your ESLint config file as shown below
 
 ```json
 "rules": {
-	"eslint-plugin-better-tree-shaking/no-top-level-side-effects": "error"
+	"better-tree-shaking/no-top-level-side-effects": "error"
 }
 ```
 
