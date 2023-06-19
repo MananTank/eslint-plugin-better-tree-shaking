@@ -1,7 +1,7 @@
 {
 	"name": "eslint-plugin-better-tree-shaking",
 	"description": "ESLint plugin for better tree shaking",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"author": "Manan Tank",
 	"main": "dist/index.js",
 	"license": "MIT",
