@@ -1,0 +1,28 @@
+# create build when a commit is pushed on all branches
+
+name: CI
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout reop
+      - uses: actions/checkout@v3
+      # setup pnpm
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      # setup node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'pnpm'
+
+      # install node modules
+      - run: pnpm install --frozen-lockfile
+      # lint and build
+      - run: pnpm run typecheck && pnpm run test && pnpm run build
