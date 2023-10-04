@@ -103,27 +103,28 @@ export const noTopLevelSideEffects: Rule.RuleModule = {
 						})
 					}
 
+					// foo().bar()
 					// /* @__PURE__ */ foo().bar()
-					if (isMarkedPure(node.object)) {
-						return
-					}
+					// if (isMarkedPure(node.object)) {
+					// 	return
+					// }
 
 					return context.report({
 						node,
-						message: markAsPure,
+						message: wrapWithIIFE,
 					})
 				}
 
 				// ?.foo();
 				if (node.parent.type === 'CallExpression') {
 					// /* @__PURE__ */ ?.foo();
-					if (isMarkedPure(node.object)) {
-						return
-					}
+					// if (isMarkedPure(node.object)) {
+					// 	return
+					// }
 
 					return context.report({
 						node,
-						message: markAsPure,
+						message: wrapWithIIFE,
 					})
 				}
 
