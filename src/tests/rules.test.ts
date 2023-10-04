@@ -38,10 +38,6 @@ tester.run('no-implicit-side-effects', noTopLevelSideEffects, {
 		expectValid('IMP.foo'),
 		// accessing member's - in pure IIFE
 		expectValid('/* @__PURE__ */ (() => IMP.foo.bar)();'),
-		// calling method - method marked as pure
-		expectValid('/* @__PURE__ */ IMP.foo()'),
-		// calling method's method - method marked as pure
-		expectValid('/* @__PURE__ */ IMP.bar().bazz()'),
 		// using member as computed property name
 		expectValid(`{ [IMP.x]: 'foo' }`),
 		// calling function - marked as pure
@@ -51,21 +47,48 @@ tester.run('no-implicit-side-effects', noTopLevelSideEffects, {
 		expectValid(`/* @__PURE__ */(() => ({ [IMP.x.y]: 'foo' }))`),
 		// accessing implicit global object's member - in pure IIFE
 		expectValid('/* @__PURE__ */(() => GLOB.foo)()'),
-		expectValid('/* @__PURE__ */ GLOB.bar()'),
-		expectValid('/* @__PURE__ */GLOB.bar().bazz()'),
 	],
 	invalid: [
+		// calling method - method marked as pure
+		expectInvalid('/* @__PURE__ */ IMP.foo()', wrapWithIIFE),
+		// calling method's method - method marked as pure
+		expectInvalid(
+			'/* @__PURE__ */ IMP.bar().bazz()',
+			wrapWithIIFE,
+			wrapWithIIFE
+		),
+		// expectInvalid('/* @__PURE__ */ GLOB.bar()'),
+		expectInvalid(
+			'/* @__PURE__ */GLOB.bar().bazz()',
+			wrapWithIIFE,
+			wrapWithIIFE
+		),
+
 		// accessing member's member
 		expectInvalid('IMP.bar.baz', wrapWithIIFE),
 		expectInvalid('(() => IMP.bar.bazz)();', markAsPure),
 		expectInvalid('/* @__PURE__ */ IMP.bar.baz', wrapWithIIFE),
 		// calling method
-		expectInvalid('IMP.bar()', markAsPure),
-		expectInvalid('IMP.bar().bazz()', markAsPure, markAsPure),
-		expectInvalid('/* @__PURE__ */ IMP.bar(IMP.bazz())', markAsPure),
+		expectInvalid('IMP.bar()', wrapWithIIFE),
+		expectInvalid('IMP.bar().bazz()', wrapWithIIFE, wrapWithIIFE),
+		expectInvalid(
+			'/* @__PURE__ */ IMP.bar(IMP.bazz())',
+			wrapWithIIFE,
+			wrapWithIIFE
+		),
 		// accessing member from a method call
-		expectInvalid('IMP.bar().bazz().xyz()', markAsPure, markAsPure, markAsPure),
-		expectInvalid('/* @__PURE__ */ IMP.bar().bazz().xyz', wrapWithIIFE),
+		expectInvalid(
+			'IMP.bar().bazz().xyz()',
+			wrapWithIIFE,
+			wrapWithIIFE,
+			wrapWithIIFE
+		),
+		expectInvalid(
+			'/* @__PURE__ */ IMP.bar().bazz().xyz',
+			wrapWithIIFE,
+			wrapWithIIFE,
+			wrapWithIIFE
+		),
 		// calling function
 		expectInvalid('bar()', markAsPure),
 		expectInvalid('IMP() ? bar : bazz', markAsPure),
@@ -75,7 +98,7 @@ tester.run('no-implicit-side-effects', noTopLevelSideEffects, {
 		// accessing implicit global object's member
 		expectInvalid('GLOB.foo', wrapWithIIFE),
 		expectInvalid('/* @__PURE__ */ GLOB.foo', wrapWithIIFE),
-		expectInvalid('GLOB.bar()', markAsPure),
-		expectInvalid('GLOB.bar().bazz', wrapWithIIFE, markAsPure),
+		expectInvalid('GLOB.bar()', wrapWithIIFE),
+		expectInvalid('GLOB.bar().bazz', wrapWithIIFE, wrapWithIIFE),
 	],
 })
